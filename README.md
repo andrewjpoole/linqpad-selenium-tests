@@ -21,7 +21,7 @@
 
 ## Tests
 
-Tests are linqpad scripts located in the linqpad-selenium-tests\autotests\Tests directory. The scripts need to be set to 'C# Program' with a Main() method
+Tests are linqpad scripts located in the linqpad-selenium-tests\linqpad-selenium-tests\Tests directory. The scripts need to be set to 'C# Program' with a Main() method
 
 The top is the place to reference any scripts:
 ```
@@ -62,7 +62,7 @@ test.EndTest(); // this ends the test, disposing the webdriver and stopping the 
 
 ## Page Object Model
 
-These live in the linqpad-selenium-tests\autotests\Framework\Pages directory
+These live in the linqpad-selenium-tests\linqpad-selenium-tests\Framework\Pages directory
 They should be fairly self explanatory, the main point is to place any ids, CSS selectors or page specific logic in one place, so that if a page changes, those things only need to be changed in one place, rather than a large number of broken tests.
 
 ```csharp
