@@ -60,6 +60,6 @@ public class GoogleHomePage : PageBase
 	
 	public bool HasLoaded() 
 	{
-		return CurrentPageTitleIsEqualTo("| ONBOARD | OVERVIEW");
+		return CurrentPageTitleIsEqualTo("Google");
 	}
 }
