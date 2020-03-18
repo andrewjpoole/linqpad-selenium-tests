@@ -21,15 +21,15 @@
 
 ## Tests
 
-Tests are linqpad scripts, set to 'C# Program' with a Main() method
+Tests are linqpad scripts located in the linqpad-selenium-tests\autotests\Tests directory. The scripts need to be set to 'C# Program' with a Main() method
 
-At the top, any referenced scipts are referenced:
+The top is the place to reference any scripts:
 ```
 #load "..\..\Framework\TestHelper.linq"
 #load "..\..\Framework\Pages\GoogleHome.linq"
 #load "..\SharedSteps.linq"
 ```
-The top is the testHelper script, which contains the whole framework.
+The top one is the testHelper script, which contains the whole framework.
 The bottom one contains shared steps.
 The references in between are the Page Object Models needed by the test.
 
@@ -58,6 +58,62 @@ test.WriteLine($"Title of clicked link is {pageTitle}");
 test.PassesIf(pageTitle != ""); // make an assertion
 
 test.EndTest(); // this ends the test, disposing the webdriver and stopping the stopwatch and writing out the result
+```
+
+## Page Object Model
+
+These live in the linqpad-selenium-tests\autotests\Framework\Pages directory
+They should be fairly self explanatory, the main point is to place any ids, CSS selectors or page specific logic in one place, so that if a page changes, those things only need to be changed in one place, rather than a large number of broken tests.
+
+```csharp
+#load "..\..\Framework\TestHelper.linq" // reference any other scripts here
+
+public class GoogleHomePage : PageBase // derrive from PageBase
+{
+	// Portal elements
+	public IWebElement SearchInput => GetElementByClass("gLFyf");
+	public IWebElement SearchButton => GetElementByClass("gNO89b");
+		
+	// constructor, must pass variables on to base class.
+	public GoogleHomePage(TestHelper testHelper):base(testHelper, "https://www.google.com/")
+	{		
+	}
+
+	// Methods
+	public void Search(string searchTerm, int durationMs = 100)
+	{
+		LogMethodStarting();
+		
+		SearchInput.SendKeys(searchTerm);
+		SearchButton.Click();
+		
+		Task.Delay(durationMs).Wait();
+		
+		LogMethodEnding();
+	}
+
+	public void ClickOnLink(int resultIndex, int durationMs = 1000)
+	{
+		LogMethodStarting();
+		
+		var results = test.Driver.FindElements(By.ClassName("LC20lb")); // find these ids or classnames using f12 dev tools
+		test.WriteLine($"returned {results.Count()} results on the first page");
+		
+		var selectedResult = results.Skip(resultIndex).FirstOrDefault();
+		var selectedElementLink = selectedResult.FindElement(By.XPath(".."));
+		
+		selectedElementLink.Click();
+
+		Task.Delay(durationMs).Wait();
+
+		LogMethodEnding();
+	}
+	
+	public bool HasLoaded() 
+	{
+		return CurrentPageTitleIsEqualTo("Google");
+	}
+}
 ```
 
 ## NunitTestCaseSource
