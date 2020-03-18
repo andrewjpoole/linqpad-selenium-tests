@@ -116,8 +116,10 @@ public class GoogleHomePage : PageBase // derrive from PageBase
 }
 ```
 
-## NunitTestCaseSource
+## Running the tests on a build with LinqpadAutoTestCaseSource and LinqpadAutoTestRunner
 
-This small nunit test project will look for linqpad scipts in the tests folder and run them as nunit tests using the linqpad commandline runner. Any tests with `//[NUNIT IGNORE]` at the top will be ignored.
+This small nunit test project will look for linqpad scipts in the tests folder and run them as nunit tests using the linqpad commandline runner. 
 
-This is intended to be used in a dotnet test step of a DevOps build.
+Any tests with `//[NUNIT IGNORE]` at the top will be ignored.
+
+This is intended to be used in a dotnet test step of a DevOps build, although there is only one unit test, each discovered linqpad script will be reported as a a test, grouped by directory name, in the build test results.
